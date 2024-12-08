@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">frnd_task</string>
+    <string name="months_prompt">Select a Month</string>
+    <string name="days_prompt">Select a Year</string>
+</resources>
