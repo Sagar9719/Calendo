@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.frnd_task.R
 import com.example.frnd_task.data.TaskDetail
 import com.example.frnd_task.databinding.TaskDetailBinding
 
-class TaskListAdapter(
+class TaskViewAdapter(
+    private val taskList: List<TaskDetail>,
     private val onTaskLongPressed: (TaskDetail) -> Unit
-) : ListAdapter<TaskDetail, TaskListAdapter.TaskViewHolder>(TaskDiffCallback()) {
+) :
+    RecyclerView.Adapter<TaskViewAdapter.TaskViewHolder>() {
     private val colorList = listOf(
         R.color.color1,
         R.color.color2,
@@ -23,7 +23,7 @@ class TaskListAdapter(
         R.color.color6
     )
 
-    private var expandedTaskPosition: Int? = null
+    var isTaskExpanded = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding = TaskDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,7 +31,7 @@ class TaskListAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = getItem(position)
+        val task = taskList[position]
 
         holder.binding.tvTitle.text = task.taskModel?.title
         holder.binding.tvDesciption.text = task.taskModel?.description
@@ -44,14 +44,10 @@ class TaskListAdapter(
             holder.binding.root.background = it
         }
 
-        holder.binding.tvDesciption.visibility =
-            if (expandedTaskPosition == position) View.VISIBLE else View.GONE
+        holder.binding.tvDesciption.visibility = if (isTaskExpanded) View.VISIBLE else View.GONE
 
         holder.itemView.setOnClickListener {
-            val previousExpandedPosition = expandedTaskPosition
-            expandedTaskPosition = if (expandedTaskPosition == position) null else position
-
-            previousExpandedPosition?.let { notifyItemChanged(it) }
+            isTaskExpanded = !isTaskExpanded
             notifyItemChanged(position)
         }
 
@@ -61,16 +57,8 @@ class TaskListAdapter(
         }
     }
 
+    override fun getItemCount(): Int = taskList.size
+
     inner class TaskViewHolder(val binding: TaskDetailBinding) :
         RecyclerView.ViewHolder(binding.root)
-
-    class TaskDiffCallback : DiffUtil.ItemCallback<TaskDetail>() {
-        override fun areItemsTheSame(oldItem: TaskDetail, newItem: TaskDetail): Boolean {
-            return oldItem.taskId == newItem.taskId
-        }
-
-        override fun areContentsTheSame(oldItem: TaskDetail, newItem: TaskDetail): Boolean {
-            return oldItem == newItem
-        }
-    }
 }

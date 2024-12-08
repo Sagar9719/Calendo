@@ -18,7 +18,7 @@ import com.example.frnd_task.data.TaskDetail
 import com.example.frnd_task.databinding.ActivityMainBinding
 import com.example.frnd_task.viewmodel.CalendarViewModel
 import com.example.frnd_task.views.adapter.CalendarViewAdapter
-import com.example.frnd_task.views.adapter.TaskListAdapter
+import com.example.frnd_task.views.adapter.TaskViewAdapter
 import com.example.frnd_task.views.dialogs.AddTaskDialog
 import com.example.frnd_task.views.dialogs.DeleteTaskDialog
 import com.example.frnd_task.views.interfaces.CalendarApis
@@ -294,19 +294,17 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
 
         val daysOfWeek = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
         val dates = generateDates(year ?: 1, month ?: 2)
-        val calendarData = daysOfWeek + dates
 
-        val adapter = CalendarViewAdapter { selectedDate ->
+        val calendarData = daysOfWeek + dates
+        recyclerView?.adapter = CalendarViewAdapter(calendarData) { selectedDate, position ->
             lifecycleScope.launch(Dispatchers.Main) {
-                selectedDay = selectedDate.toIntOrNull() ?: 0
+                selectedDay = selectedDate.toInt()
+                notifyCalendarAdapter(position)
                 withContext(Dispatchers.IO) {
-                    filterTasksByDate(taskList, selectedYear, selectedMonth, selectedDay)
+                    filterTasksByDate(taskList, selectedYear, selectedMonth, selectedDate.toInt())
                 }
             }
         }
-
-        recyclerView?.adapter = adapter
-        adapter.submitList(calendarData)
     }
 
     private fun notifyCalendarAdapter(position: Int) {
@@ -342,13 +340,9 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
                 noTasksTextView?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
                 recyclerView?.layoutManager = LinearLayoutManager(this@MainActivity)
-
-                val taskAdapter = TaskListAdapter { taskDetail ->
+                recyclerView?.adapter = TaskViewAdapter(taskList) { taskDetail ->
                     openDeleteTaskDialog(taskDetail)
                 }
-
-                recyclerView?.adapter = taskAdapter
-                taskAdapter.submitList(taskList)
             }
         }
     }
