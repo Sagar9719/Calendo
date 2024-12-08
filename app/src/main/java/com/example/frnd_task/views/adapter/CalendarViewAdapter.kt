@@ -5,15 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.frnd_task.R
 import com.example.frnd_task.databinding.ItemCalendarDayBinding
 
 class CalendarViewAdapter(
-    private val days: List<String>,
-    private val onDateClick: (String, Int) -> Unit
-) :
-    RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
+    private val onDateClick: (String) -> Unit
+) : ListAdapter<String, CalendarViewAdapter.CalendarViewHolder>(CalendarDiffCallback()) {
+
     private var selectedDate: String? = "1"
 
     inner class CalendarViewHolder(private val binding: ItemCalendarDayBinding) :
@@ -23,9 +24,10 @@ class CalendarViewAdapter(
                 if (selectedDate != date) {
                     selectedDate = date
                     notifyDataSetChanged()
-                    onDateClick(date, position)
+                    onDateClick(date)
                 }
             }
+
             if (date == selectedDate) {
                 itemView.setBackgroundColor(
                     ContextCompat.getColor(
@@ -36,7 +38,8 @@ class CalendarViewAdapter(
             } else {
                 itemView.setBackgroundColor(Color.TRANSPARENT)
             }
-            if (date.isNullOrEmpty()) {
+
+            if (date.isEmpty()) {
                 itemView.visibility = View.GONE
             } else {
                 itemView.visibility = View.VISIBLE
@@ -52,11 +55,17 @@ class CalendarViewAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.bind(days[position], position)
+        val date = getItem(position)
+        holder.bind(date, position)
     }
 
-    override fun getItemCount(): Int {
-        return days.size
-    }
+    class CalendarDiffCallback : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+            return oldItem == newItem
+        }
 
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

@@ -294,17 +294,19 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
 
         val daysOfWeek = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
         val dates = generateDates(year ?: 1, month ?: 2)
-
         val calendarData = daysOfWeek + dates
-        recyclerView?.adapter = CalendarViewAdapter(calendarData) { selectedDate, position ->
+
+        val adapter = CalendarViewAdapter { selectedDate ->
             lifecycleScope.launch(Dispatchers.Main) {
-                selectedDay = selectedDate.toInt()
-                notifyCalendarAdapter(position)
+                selectedDay = selectedDate.toIntOrNull() ?: 0
                 withContext(Dispatchers.IO) {
-                    filterTasksByDate(taskList, selectedYear, selectedMonth, selectedDate.toInt())
+                    filterTasksByDate(taskList, selectedYear, selectedMonth, selectedDay)
                 }
             }
         }
+
+        recyclerView?.adapter = adapter
+        adapter.submitList(calendarData)
     }
 
     private fun notifyCalendarAdapter(position: Int) {
