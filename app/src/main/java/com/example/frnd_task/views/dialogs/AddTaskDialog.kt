@@ -14,19 +14,19 @@ class AddTaskDialog(
     private val onTaskAdded: (title: String, description: String) -> Unit
 ) : DialogFragment() {
     private var _binding: AddTaskDialogBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = AddTaskDialogBinding.inflate(LayoutInflater.from(context))
 
         val builder = AlertDialog.Builder(requireContext())
-        builder.setView(binding.root)
+        builder.setView(binding?.root)
 
-        binding.btnSubmit.setOnClickListener {
+        binding?.btnSubmit?.setOnClickListener {
             context?.let { context ->
                 if (HelperFunctions.isNetworkConnected(context)) {
-                    val title = binding.etTitle.text.toString().trim()
-                    val description = binding.etDescription.text.toString().trim()
+                    val title = binding?.etTitle?.text.toString().trim()
+                    val description = binding?.etDescription?.text.toString().trim()
 
                     if (title.isEmpty() || description.isEmpty()) {
                         Toast.makeText(
@@ -46,7 +46,7 @@ class AddTaskDialog(
             }
         }
 
-        binding.btnCancel.setOnClickListener {
+        binding?.btnCancel?.setOnClickListener {
             dismiss()
         }
 

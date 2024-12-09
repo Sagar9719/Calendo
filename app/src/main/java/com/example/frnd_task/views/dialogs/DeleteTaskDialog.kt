@@ -14,15 +14,15 @@ class DeleteTaskDialog(
     private val deleteTask: (isDelete: Boolean) -> Unit
 ) : DialogFragment() {
     private var _binding: DeleteTaskDialogBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DeleteTaskDialogBinding.inflate(LayoutInflater.from(context))
 
         val builder = AlertDialog.Builder(requireContext())
-        builder.setView(binding.root)
+        builder.setView(binding?.root)
 
-        binding.btnDelete.setOnClickListener {
+        binding?.btnDelete?.setOnClickListener {
             context?.let { context ->
                 if (HelperFunctions.isNetworkConnected(context)) {
                     deleteTask(true)
@@ -34,7 +34,7 @@ class DeleteTaskDialog(
             dismiss()
         }
 
-        binding.btnCancel.setOnClickListener {
+        binding?.btnCancel?.setOnClickListener {
             deleteTask(false)
             dismiss()
         }
