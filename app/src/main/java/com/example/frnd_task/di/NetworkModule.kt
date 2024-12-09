@@ -1,5 +1,8 @@
-package com.example.frnd_task.network
+package com.example.frnd_task.di
 
+import com.example.frnd_task.repository.CalendarApi
+import com.example.frnd_task.repository.CalendarRepository
+import com.example.frnd_task.repository.CalendarRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

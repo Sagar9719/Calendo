@@ -6,7 +6,7 @@ import com.example.frnd_task.data.ApiResponse
 import com.example.frnd_task.data.ApiResponseState
 import com.example.frnd_task.data.ErrorResponse
 import com.example.frnd_task.data.TaskResponse
-import com.example.frnd_task.network.CalendarRepository
+import com.example.frnd_task.repository.CalendarRepository
 import com.example.frnd_task.utils.safeLaunch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

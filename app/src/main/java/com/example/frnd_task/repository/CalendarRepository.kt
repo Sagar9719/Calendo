@@ -1,4 +1,4 @@
-package com.example.frnd_task.network
+package com.example.frnd_task.repository
 
 import com.example.frnd_task.data.ApiResponse
 import com.example.frnd_task.data.TaskResponse
