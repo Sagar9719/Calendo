@@ -24,6 +24,7 @@ import com.example.frnd_task.views.dialogs.DeleteTaskDialog
 import com.example.frnd_task.views.interfaces.CalendarApis
 import com.example.frnd_task.views.interfaces.Spin
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.ParseException
@@ -47,13 +48,21 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
         setContentView(_binding?.root)
 
         callTaskApi()
+        initObservers()
+        initSpinListeners()
+        setCalendarAdapter(selectedYear, selectedMonth)
+        initClickListeners()
+    }
+
+    private fun initSpinListeners() {
+        setSpinYearAndListener()
+        setSpinMonthAndListener()
+    }
+
+    private fun initObservers() {
         initGetTaskObserver()
         initStoreTaskObserver()
         initDeleteTaskObserver()
-        setSpinYearAndListener()
-        setSpinMonthAndListener()
-        setCalendarAdapter(selectedYear, selectedMonth)
-        initClickListeners()
     }
 
     override fun setSpinMonthAndListener() {
@@ -179,52 +188,58 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
     }
 
     private fun initGetTaskObserver() {
-        calendarViewModel.getTaskLiveData.observe(this) {
-            when (it.status) {
-                ApiResponseState.Status.SUCCESS -> {
-                    it?.data?.taskDetails?.let { dataList ->
-                        taskList = dataList.toMutableList()
-                        filterTasksByDate(dataList, selectedYear, selectedMonth, selectedDay)
+        lifecycleScope.launch {
+            calendarViewModel.getTaskSharedFlow.collectLatest {
+                when (it.status) {
+                    ApiResponseState.Status.SUCCESS -> {
+                        it.data?.taskDetails?.let { dataList ->
+                            taskList = dataList.toMutableList()
+                            filterTasksByDate(dataList, selectedYear, selectedMonth, selectedDay)
+                        }
                     }
-                }
 
-                ApiResponseState.Status.ERROR -> {
-                    showToast(description = "Something Went Wrong")
-                }
+                    ApiResponseState.Status.ERROR -> {
+                        showToast(description = "Something Went Wrong")
+                    }
 
-                else -> Unit
+                    else -> Unit
+                }
             }
         }
     }
 
     private fun initDeleteTaskObserver() {
-        calendarViewModel.deleteTaskLiveData.observe(this) {
-            when (it.status) {
-                ApiResponseState.Status.SUCCESS -> {
-                    showToast(description = "Task Deleted Successfully!!")
-                }
+        lifecycleScope.launch {
+            calendarViewModel.deleteSharedFlow.collectLatest {
+                when (it.status) {
+                    ApiResponseState.Status.SUCCESS -> {
+                        showToast(description = "Task Deleted Successfully!!")
+                    }
 
-                ApiResponseState.Status.ERROR -> {
-                    showToast(description = "Something Went Wrong")
-                }
+                    ApiResponseState.Status.ERROR -> {
+                        showToast(description = "Something Went Wrong")
+                    }
 
-                ApiResponseState.Status.LOADING -> {}
+                    ApiResponseState.Status.LOADING -> {}
+                }
             }
         }
     }
 
     private fun initStoreTaskObserver() {
-        calendarViewModel.storeTaskLiveData.observe(this) {
-            when (it.status) {
-                ApiResponseState.Status.SUCCESS -> {
-                    showToast(description = "Task Added Successfully!!")
-                }
+        lifecycleScope.launch {
+            calendarViewModel.storeTaskSharedFlow.collectLatest {
+                when (it.status) {
+                    ApiResponseState.Status.SUCCESS -> {
+                        showToast(description = "Task Added Successfully!!")
+                    }
 
-                ApiResponseState.Status.ERROR -> {
-                    showToast(description = "Something Went Wrong")
-                }
+                    ApiResponseState.Status.ERROR -> {
+                        showToast(description = "Something Went Wrong")
+                    }
 
-                ApiResponseState.Status.LOADING -> {}
+                    ApiResponseState.Status.LOADING -> {}
+                }
             }
         }
     }
