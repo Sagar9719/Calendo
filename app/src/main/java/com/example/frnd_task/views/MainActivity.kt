@@ -81,8 +81,7 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinMonth.adapter = adapter
 
-            val predefinedMonth = JANUARY
-            val predefinedPosition = monthNames.indexOf(predefinedMonth)
+            val predefinedPosition = monthNames.indexOf(PREDEFINED_MONTH)
             if (predefinedPosition >= 0) {
                 spinMonth.setSelection(predefinedPosition)
             }
@@ -124,12 +123,11 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerYear.adapter = adapter
 
-            val predefinedYear = TWENTY_FOUR
-            val predefinedPosition = yearList.indexOf(predefinedYear)
+            val predefinedPosition = yearList.indexOf(PREDEFINED_YEAR)
             if (predefinedPosition >= 0) {
                 spinnerYear.setSelection(predefinedPosition)
             }
-            selectedYear = predefinedYear.toInt()
+            selectedYear = PREDEFINED_YEAR.toInt()
             spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
@@ -413,7 +411,6 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
         private const val OCTOBER = "October"
         private const val NOVEMBER = "November"
         private const val DECEMBER = "December"
-        private const val TWENTY_FOUR = "2024"
         private const val SUNDAY = "Sun"
         private const val MONDAY = "Mon"
         private const val TUESDAY = "Tue"
@@ -421,5 +418,7 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
         private const val THURSDAY = "Thu"
         private const val FRIDAY = "Fri"
         private const val SATURDAY = "Sat"
+        const val PREDEFINED_YEAR = "2024"
+        const val PREDEFINED_MONTH = "January"
     }
 }
