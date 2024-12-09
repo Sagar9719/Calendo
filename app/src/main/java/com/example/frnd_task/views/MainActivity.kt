@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.frnd_task.R
 import com.example.frnd_task.data.ApiResponseState
 import com.example.frnd_task.data.Task
 import com.example.frnd_task.data.TaskDetail
@@ -69,8 +70,8 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
         binding?.apply {
             val spinMonth: Spinner = spinnerMonth
             val monthNames = listOf(
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
+                JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
+                JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
             )
 
             val adapter =
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinMonth.adapter = adapter
 
-            val predefinedMonth = "January"
+            val predefinedMonth = JANUARY
             val predefinedPosition = monthNames.indexOf(predefinedMonth)
             if (predefinedPosition >= 0) {
                 spinMonth.setSelection(predefinedPosition)
@@ -121,7 +122,7 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerYear.adapter = adapter
 
-            val predefinedYear = "2024"
+            val predefinedYear = TWENTY_FOUR
             val predefinedPosition = yearList.indexOf(predefinedYear)
             if (predefinedPosition >= 0) {
                 spinnerYear.setSelection(predefinedPosition)
@@ -199,7 +200,7 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
                     }
 
                     ApiResponseState.Status.ERROR -> {
-                        showToast(description = "Something Went Wrong")
+                        showToast(description = getString(R.string.something_went_wrong))
                     }
 
                     else -> Unit
@@ -213,11 +214,11 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
             calendarViewModel.deleteSharedFlow.collectLatest {
                 when (it.status) {
                     ApiResponseState.Status.SUCCESS -> {
-                        showToast(description = "Task Deleted Successfully!!")
+                        showToast(description = getString(R.string.task_deleted_successfully))
                     }
 
                     ApiResponseState.Status.ERROR -> {
-                        showToast(description = "Something Went Wrong")
+                        showToast(description = getString(R.string.something_went_wrong))
                     }
 
                     ApiResponseState.Status.LOADING -> {}
@@ -231,11 +232,11 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
             calendarViewModel.storeTaskSharedFlow.collectLatest {
                 when (it.status) {
                     ApiResponseState.Status.SUCCESS -> {
-                        showToast(description = "Task Added Successfully!!")
+                        showToast(description = getString(R.string.task_added_successfully))
                     }
 
                     ApiResponseState.Status.ERROR -> {
-                        showToast(description = "Something Went Wrong")
+                        showToast(description = getString(R.string.something_went_wrong))
                     }
 
                     ApiResponseState.Status.LOADING -> {}
@@ -307,7 +308,7 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
         val recyclerView: RecyclerView? = binding?.rvCalendar
         recyclerView?.layoutManager = GridLayoutManager(this, 7)
 
-        val daysOfWeek = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+        val daysOfWeek = listOf(SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY)
         val dates = generateDates(year ?: 1, month ?: 2)
 
         val calendarData = daysOfWeek + dates
@@ -346,7 +347,7 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
 
         if (taskList.isNullOrEmpty()) {
             lifecycleScope.launch(Dispatchers.Main) {
-                showToast(description = "No Task")
+                showToast(description = getString(R.string.no_task))
                 noTasksTextView?.visibility = View.VISIBLE
                 recyclerView?.visibility = View.GONE
             }
@@ -398,5 +399,25 @@ class MainActivity : AppCompatActivity(), Spin, CalendarApis {
     companion object {
         private const val ADD_TASK_DIALOG = "AddTaskDialog"
         private const val DELETE_TASK_DIALOG = "DeleteTaskDialog"
+        private const val JANUARY = "January"
+        private const val FEBRUARY = "February"
+        private const val MARCH = "March"
+        private const val APRIL = "April"
+        private const val MAY = "May"
+        private const val JUNE = "June"
+        private const val JULY = "July"
+        private const val AUGUST = "August"
+        private const val SEPTEMBER = "September"
+        private const val OCTOBER = "October"
+        private const val NOVEMBER = "November"
+        private const val DECEMBER = "December"
+        private const val TWENTY_FOUR = "2024"
+        private const val SUNDAY = "Sun"
+        private const val MONDAY = "Mon"
+        private const val TUESDAY = "Tue"
+        private const val WEDNESDAY = "Wed"
+        private const val THURSDAY = "Thu"
+        private const val FRIDAY = "Fri"
+        private const val SATURDAY = "Sat"
     }
 }

@@ -2,4 +2,21 @@
     <string name="app_name">frnd_task</string>
     <string name="months_prompt">Select a Month</string>
     <string name="days_prompt">Select a Year</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="please_fill_in_all_fields">Please fill in all fields</string>
+    <string name="something_went_wrong">Something Went Wrong</string>
+    <string name="task_deleted_successfully">Task Deleted Successfully!!</string>
+    <string name="task_added_successfully">Task Added Successfully!!</string>
+    <string name="no_task">No Task…</string>
+    <string name="calendar">Calendar</string>
+    <string name="previous_month">Previous Month</string>
+    <string name="next_month">Next Month</string>
+    <string name="tasks">Tasks</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="are_you_sure_you_want_to_delete_task">Are you sure you want to delete task?</string>
+    <string name="delete">Delete</string>
+    <string name="one">1</string>
 </resources>

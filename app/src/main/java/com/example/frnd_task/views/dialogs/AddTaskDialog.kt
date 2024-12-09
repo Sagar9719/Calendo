@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.example.frnd_task.R
 import com.example.frnd_task.databinding.AddTaskDialogBinding
+import com.example.frnd_task.utils.HelperFunctions
 
 class AddTaskDialog(
     private val onTaskAdded: (title: String, description: String) -> Unit
@@ -21,14 +23,26 @@ class AddTaskDialog(
         builder.setView(binding.root)
 
         binding.btnSubmit.setOnClickListener {
-            val title = binding.etTtile.text.toString().trim()
-            val description = binding.etDescription.text.toString().trim()
+            context?.let { context ->
+                if (HelperFunctions.isNetworkConnected(context)) {
+                    val title = binding.etTitle.text.toString().trim()
+                    val description = binding.etDescription.text.toString().trim()
 
-            if (title.isEmpty() || description.isEmpty()) {
-                Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-            } else {
-                onTaskAdded(title, description)
-                dismiss()
+                    if (title.isEmpty() || description.isEmpty()) {
+                        Toast.makeText(
+                            context,
+                            R.string.please_fill_in_all_fields,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        onTaskAdded(title, description)
+                        dismiss()
+                    }
+                } else {
+                    Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT)
+                        .show()
+                    dismiss()
+                }
             }
         }
 

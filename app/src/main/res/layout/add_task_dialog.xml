@@ -2,62 +2,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/rounded_background_dialog"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/rounded_background_dialog">
+    android:padding="16dp">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etTtile"
+        android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Enter Title"
+        android:hint="@string/enter_title"
         android:inputType="text"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toTopOf="@id/etDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Enter Description"
+        android:hint="@string/enter_description"
         android:inputType="text"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toTopOf="@id/btnCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etTtile"
-        android:textColorHint="@color/black"/>
+        app:layout_constraintTop_toBottomOf="@id/etTitle" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCancel"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button_bg"
+        android:text="@string/cancel"
+        android:textColor="@color/color5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnSubmit"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/color5"
         app:layout_constraintTop_toBottomOf="@id/etDescription" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmit"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Submit"
         android:background="@drawable/button_bg"
+        android:text="@string/submit"
+        android:textColor="@color/color5"
         app:layout_constraintBottom_toBottomOf="@id/btnCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnCancel"
-        app:layout_constraintTop_toTopOf="@id/btnCancel"
-        android:textColor="@color/color5"/>
-
+        app:layout_constraintTop_toTopOf="@id/btnCancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
