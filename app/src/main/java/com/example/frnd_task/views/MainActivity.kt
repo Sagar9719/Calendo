@@ -24,6 +24,7 @@ import com.example.frnd_task.views.dialogs.AddTaskDialog
 import com.example.frnd_task.views.dialogs.DeleteTaskDialog
 import com.example.frnd_task.views.interfaces.CalendarApis
 import com.example.frnd_task.views.interfaces.Spin
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Spin, CalendarApis {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding

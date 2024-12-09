@@ -2,16 +2,17 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "com.example.frnd_task"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.frnd_task"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -65,9 +66,15 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.google.android.material:material:1.10.0")
 
-//    implementation(libs.hilt.android)
-//    implementation("com.google.android.material:material:1.10.0")
-//    kapt(libs.hilt.compiler)
-//    kapt("androidx.hilt:hilt-compiler:1.2.0")
-//    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation("com.google.android.material:material:1.10.0")
+    kapt(libs.hilt.android.compiler)
+}
+
+kapt {
+    correctErrorTypes = true
+}
+
+hilt {
+    enableAggregatingTask = false
 }

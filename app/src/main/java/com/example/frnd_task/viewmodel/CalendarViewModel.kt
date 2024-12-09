@@ -3,20 +3,23 @@ package com.example.frnd_task.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.frnd_task.data.ApiResponse
-import com.example.frnd_task.utils.safeLaunch
 import com.example.frnd_task.data.ApiResponseState
 import com.example.frnd_task.data.ErrorResponse
 import com.example.frnd_task.data.TaskResponse
-import com.example.frnd_task.network.storeTaskInvoke
-import com.example.frnd_task.network.deleteTaskInvoke
-import com.example.frnd_task.network.getTasksInvoke
+import com.example.frnd_task.network.CalendarRepository
+import com.example.frnd_task.utils.safeLaunch
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CalendarViewModel : ViewModel() {
+@HiltViewModel
+class CalendarViewModel @Inject constructor(
+    private val calendarRepository: CalendarRepository
+): ViewModel() {
     private val _storeTaskSharedFlow: MutableSharedFlow<ApiResponseState<ApiResponse>> =
         MutableSharedFlow(replay = 0)
     val storeTaskSharedFlow: SharedFlow<ApiResponseState<ApiResponse>> = _storeTaskSharedFlow
@@ -33,7 +36,7 @@ class CalendarViewModel : ViewModel() {
         viewModelScope.safeLaunch({
             _storeTaskSharedFlow.emit(ApiResponseState.loading())
             withContext(Dispatchers.IO) {
-                storeTaskInvoke(userId, title, description, createdAt)
+                calendarRepository.storeTaskInvoke(userId, title, description, createdAt)
                     ?.onSuccess {
                         _storeTaskSharedFlow.emit(ApiResponseState.success(it))
                     }
@@ -66,7 +69,7 @@ class CalendarViewModel : ViewModel() {
     fun deleteTask(userId: Int, taskId: Int) = viewModelScope.safeLaunch({
         _deleteTaskSharedFlow.emit(ApiResponseState.loading())
         withContext(Dispatchers.IO) {
-            deleteTaskInvoke(userId, taskId)
+            calendarRepository.deleteTaskInvoke(userId, taskId)
                 ?.onSuccess {
                     _deleteTaskSharedFlow.emit(ApiResponseState.success(it))
                 }
@@ -99,7 +102,7 @@ class CalendarViewModel : ViewModel() {
     fun getTask(userId: Int) = viewModelScope.safeLaunch({
         _getTaskSharedFlow.emit(ApiResponseState.loading())
         withContext(Dispatchers.IO) {
-            getTasksInvoke(userId)
+            calendarRepository.getTasksInvoke(userId)
                 ?.onSuccess {
                     _getTaskSharedFlow.emit(ApiResponseState.success(it))
                 }
